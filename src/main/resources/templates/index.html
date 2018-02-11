@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8"/>
+   <title>angularjs实现 ajax</title>
+</head>
+<body ng-app="HelloAjax">
+<div ng-controller="HelloAjax">
+   <tr>
+      <td>姓名：</td>
+      <td>{{data.username}}</td>
+   </tr>
+   <tr>
+      <button ng-click="get_more();">get more</button>
+   </tr>
+</div>
+</body>
+<script type="text/javascript" src="../js/plugin/angular.min.js" charset="utf-8"></script>
+<script>
+    var myModule = angular.module("HelloAjax",[]);
+    myModule.controller("HelloAjax",["$scope","$http",function HelloAjax($scope,$http){
+        var data = {"id":1};
+        var info = {"timestamp":1253645651212};
+        var searchData = {"data":data,"info":info};
+        $scope.get_more = function(){
+            $http({
+                method: 'POST',
+                url: "/user/id",
+                data:searchData,
+                headers: {
+                    'Content-Type': "application/json"
+                }
+            }).then(function(data) {
+                $scope.data = data.data.data;
+            })
+                .catch(function(data) {
+                    console.log(data);
+                });
+        }
+    }]);
+</script>
+</html>
